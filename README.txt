@@ -1,3 +1,8 @@
+
+
+This version of blogito was modified by Bradley Beddoes ( beddoes@intient.com ) as a basic example of what you can achieve when plugging Nimble into an existing application.
+
+
 Blogito is a simple blog publishing application written in Grails. For more information, see http://blogito.org. 
 
 Blogito is featured in the IBM developerWorks series Mastering Grails. See <www.ibm.com/developerworks/views/java/libraryview.jsp?search_by=mastering+grails>.
