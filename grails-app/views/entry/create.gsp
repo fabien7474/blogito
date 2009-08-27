@@ -3,7 +3,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="layout" content="main" />
+        <meta name="layout" content="admin" />
         <title>Create Entry</title>         
     </head>
     <body>
@@ -23,7 +23,7 @@
             </g:hasErrors>
             <g:uploadForm action="save" method="post" >
             
-              <!--input type="hidden" name="author.id" value="${session.user.id}" /-->
+              
             
                 <div class="dialog">
                     <table>
