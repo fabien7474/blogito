@@ -48,32 +48,80 @@ class NimbleBootStrap {
 
         // Create example User account
         def user = new User()
-        user.username = "user"
-        user.pass = 'useR123!'
-        user.passConfirm = 'useR123!'
+        user.username = "jdoe"
+        user.pass = 'jdoE123!'
+        user.passConfirm = 'jdoE123!'
         user.enabled = true
 
         Profile userProfile = new Profile()
-        userProfile.fullName = "Test User"
+        userProfile.fullName = "John Doe"
         userProfile.owner = user
         user.profile = userProfile
 
         def e1 = new Entry(title:"Grails 1.1 beta is out", summary:"Check out the new features")
-        e1.author = user
+        def e2 = new Entry(title:"Just Released - Groovy 1.6 beta 2", summary:"It is looking good.")
         user.addToEntries(e1)
-
+        user.addToEntries(e2)
 
         def savedUser = userService.createUser(user)
         if (savedUser.hasErrors()) {
             savedUser.errors.each {
                 log.error(it)
             }
-            throw new RuntimeException("Error creating example user")
+            throw new RuntimeException("Error creating example user jdoe")
         }
 
-        def entryPermission = new Permission(type: Permission.wildcardPerm)
-        entryPermission.target = "blog:entry:*:${e1.id}"
-        permissionService.createPermission(entryPermission, savedUser)
+        // touch hacky but we need to make sure we have entry ID
+        e1.refresh()
+        e2.refresh()
+
+        // Allow this user to edit the entires they've created'
+        def e1EditPermission = new Permission(type: Permission.wildcardPerm)
+        e1EditPermission.target = "blog:entry:*:${e1.id}"
+        permissionService.createPermission(e1EditPermission, savedUser)
+
+        def e2EditPermission = new Permission(type: Permission.wildcardPerm)
+        e2EditPermission.target = "blog:entry:*:${e2.id}"
+        permissionService.createPermission(e2EditPermission, savedUser)
+
+        def user2 = new User()
+        user2.username = "jsmith"
+        user2.pass = 'jsmitH123!'
+        user2.passConfirm = 'jsmitH123!'
+        user2.enabled = true
+
+        Profile userProfile2 = new Profile()
+        userProfile2.fullName = "John Smith"
+        userProfile2.owner = user2
+        user2.profile = userProfile
+
+        def e3 = new Entry(title:"Codecs in Grails", summary:"See Mastering Grails")
+        def e4 = new Entry(title:"Testing with Groovy", summary:"See Practically Groovy")
+        user2.addToEntries(e3)
+        user2.addToEntries(e4)
+
+        def savedUser2 = userService.createUser(user2)
+        if (savedUser2.hasErrors()) {
+            savedUser2.errors.each {
+                log.error(it)
+            }
+            throw new RuntimeException("Error creating example user jsmith")
+        }
+
+        // touch hacky but we need to make sure we have entry ID
+        e3.refresh()
+        e4.refresh()
+        
+        // Allow this user to edit the entires they've created'
+        def e3EditPermission = new Permission(type: Permission.wildcardPerm)
+        e3EditPermission.target = "blog:entry:*:${e3.id}"
+        permissionService.createPermission(e3EditPermission, savedUser2)
+
+        def e4EditPermission = new Permission(type: Permission.wildcardPerm)
+        e4EditPermission.target = "blog:entry:*:${e4.id}"
+        permissionService.createPermission(e4EditPermission, savedUser2)
+
+
 
         // Create example Administrative account
         def admins = Role.findByName(AdminsService.ADMIN_ROLE)
